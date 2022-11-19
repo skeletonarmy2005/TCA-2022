@@ -1,62 +1,132 @@
-import tkinter
-from tkinter import *
-from tkinter import ttk
+from random import *
+from turtle import *
 
-# cores -------------
-co0 = "#FFFFFF" # white
-co1 = "#333333" # branca
-co2 = "#fcc058" # orange
-co3 = "#38576b" # valor
-co4 = "#3297a8" # blue
-co5 = "#fff873" # yellow
-co6 = "#fcc058" # orange
-co7 = "#e85151" # vermelha
-co8 = "#34eb3d" # + verde
-fundo = "#3b3b3b"
+screen = Screen()
+screen.bgcolor("white")
 
 
-# configuração janela------
-janela = tk()
-janela.title('')
-janela.geometry('260x280')
-janela.configure(bg=fundo)
+def Square(x, y):
+    up()
+    goto(x, y)
+    down()
+    color('black', '#87CEFA')
+    begin_fill()
+    for count in range(4):
+        forward(50)
+        left(90)
+    end_fill()
 
 
-# divisão janela------
-
-frame_cima = frame(janela, width=260, height=100, bg=co1, relief='raised')
-frame_cima.grid(row = 0, column = 0, sticky=NW)
-
-frame_baixo = frame(janela, width=260, height=300, bg=co0, relief='flat')
-frame_baixo.grid(row = 1, column = 0, sticky=NW)
-
-estilo = ttk.style(janela)
-estilo.the_use('clam')
-
-# configuração frame cima
-
-app_1 = label(frame_cima, text="voce", height=1, anchor='center', font=('Ivy 10 bold'), bg=co1, fg=co0)
-app_1.place(x=25, y=70)
-app_1_linha = label(frame_cima, text="", height=10, anchor='center', font=('Ivy 10 bold'), bg=co0, fg=co0)
-app_1_linha.place(x=0, y=0)
-app_1_pontos = label(frame_cima, text="0", height=1, anchor='center', font=('Ivy 30 bold'), bg=co1, fg=co0)
-app_1.place(x=50, y=20)
-
-app_ = label(frame_cima, text=":", height=1, anchor='center', font=('Ivy 30 bold'), bg=co1, fg=co0)
-app_.place(x=125, y=20)
+def Numbering(x, y):
+    return int((x + 200) // 50 + ((y + 200) // 50) * 8)
 
 
-
-app_2_pontos = label(frame_cima, text="0", height=1, anchor='center', font=('Ivy 30 bold'), bg=co1, fg=co0)
-app_2.place(x=170, y=20)
-app_2 = label(frame_cima, text="computador", height=1, anchor='center', font=('Ivy 10 bold'), bg=co1, fg=co0)
-app_2.place(x=205, y=70)
-app_2_linha = label(frame_cima, text="", height=10, anchor='center', font=('Ivy 10 bold'), bg=co0, fg=co0)
-app_2_linha.place(x=255, y=0)
-
-app_linha = label(frame_cima, text="", widht=255 anchor='center', font=('Ivy 1 bold'), bg=co1, fg=co0)
-app_linha.place(x=0, y=95)
+def Coordinates(count):
+    return (count % 8) * 50 - 200, (count // 8) * 50 - 200
 
 
+def click(x, y):
+    spot = Numbering(x, y)
+    mark = state['mark']
 
-janela.mainloop()
+    if mark is None or mark == spot or tiles[mark] != tiles[spot]:
+        state['mark'] = spot
+    else:
+        hide[spot] = False
+        hide[mark] = False
+        state['mark'] = None
+
+
+def draw():
+    clear()
+    goto(0, 0)
+    stamp()
+
+    for count in range(64):
+        if hide[count]:
+            x, y = Coordinates(count)
+            Square(x, y)
+
+    mark = state['mark']
+
+    if mark is not None and hide[mark]:
+        x, y = Coordinates(mark)
+        up()
+        goto(x + 2, y)
+        color('black')
+        write(tiles[mark], font=('Arial', 30, 'normal'))
+
+    update()
+    ontimer(draw, 10)
+
+
+tiles = list(range(32)) * 2
+state = {'mark': None}
+hide = [True] * 64
+
+shuffle(tiles)
+tracer(False)
+onscreenclick(click)
+draw()
+done() from random import *
+from turtle import *
+screen = Screen()
+screen.bgcolor("white")
+
+def Square(x, y):
+    up()
+    goto(x, y)
+    down()
+    color('black', '#87CEFA')
+    begin_fill()
+    for count in range(4):
+        forward(50)
+        left(90)
+    end_fill()
+def Numbering(x, y):
+    return int((x + 200) // 50 + ((y + 200) // 50) * 8)
+def Coordinates(count):
+    return (count % 8) * 50 - 200, (count // 8) * 50 - 200
+
+def click(x, y):
+    spot = Numbering(x, y)
+    mark = state['mark']
+
+    if mark is None or mark == spot or tiles[mark] != tiles[spot]:
+        state['mark'] = spot
+    else:
+        hide[spot] = False
+        hide[mark] = False
+        state['mark'] = None
+
+def draw():
+    clear()
+    goto(0, 0)
+    stamp()
+
+    for count in range(64):
+        if hide[count]:
+            x, y = Coordinates(count)
+            Square(x, y)
+
+    mark = state['mark']
+
+    if mark is not None and hide[mark]:
+        x, y = Coordinates(mark)
+        up()
+        goto(x + 2, y)
+        color('black')
+        write(tiles[mark], font=('Arial', 30, 'normal'))
+
+    update()
+    ontimer(draw, 10)
+
+tiles = list(range(32)) * 2
+state = {'mark': None}
+hide = [True] * 64
+
+shuffle(tiles)
+tracer(False)
+onscreenclick(click)
+draw()
+done()
