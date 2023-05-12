@@ -1,0 +1,39 @@
+// os pinos para o sensor e o buzzer
+#define TRIGGER_PIN 2
+#define ECHO_PIN 3
+#define BUZZER_PIN 4
+
+void setup() {
+
+
+  // os pinos do sensor como entrada e do buzzer como saída
+  pinMode(TRIGGER_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+}
+
+void loop() {
+  // Define a variável para armazenar a distância medida pelo sensor
+  float distance;
+
+  // Ativa o sensor enviando um pulso de 10 microssegundos no pino TRIGGER
+  digitalWrite(TRIGGER_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIGGER_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGER_PIN, LOW);
+
+  // Calcula a distância medida do sensor em centímetros
+  distance = pulseIn(ECHO_PIN, HIGH) / 58.0;
+
+
+  //  distância medida menor que 110 cm, emite um som com frequência  1000 Hz
+  if (distance < 110) {
+    tone(BUZZER_PIN, 1000);
+  } else {
+    noTone(BUZZER_PIN);
+  }
+
+  //  espera 100 milissegundos antes de fazer a próxima medição
+  delay(100);
+}
